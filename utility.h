@@ -25,3 +25,11 @@ void move(float distance)
 	motor[left] = 0;
 	motor[right] = 0;
 }
+
+
+{
+
+void turn(degreesToRadians)
+{
+
+}
