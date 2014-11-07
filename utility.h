@@ -1,18 +1,28 @@
 const float ROBOT_RATE = 200;	//measure this to find real value
 const float MOTOR_SPEED = 75;
+const float RADIUS = 5; //measure this to find real value
 
-void turnRight()
+void turn(float degrees)
 {
-	motor[left] = MOTOR_SPEED;
-	motor[right] = MOTOR_SPEED;
-	wait1Msec(100);
-}
+	float rad = degrees * PI/180;
+	float distance = rad * RADIUS;
+	float time = distance/ROBOT_SPEED;
+	time = time * 1000;
 
-void turnLeft()
-{
-	motor[left] = -75;
-	motor[right] = -75;
-	wait1Msec(100);
+	if (degrees > 0)
+		{
+			motor[left] = ROBOT_SPEED;
+			motor[right] = 0;
+			wait1Msec(time);
+			motor[left] = 0;
+		}
+	else if (degrees < 0)
+	{
+		motor[left] = 0;
+		motor[right] = ROBOT_SPEED;
+		wait1Msec(time);
+		motor[right] = 0;
+	}
 }
 
 void move(float distance)
