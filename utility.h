@@ -70,3 +70,32 @@ void move(float distance)
 	motor[left] = 0;
 	motor[right] = 0;
 }
+
+void joystickControl()
+{
+		getJoystickSettings(joystick);
+		if (joylBtn(3))
+		{
+		servo[lockServo] = 182;
+		}
+		else (joylBtn(4))
+		{
+		servo[lockServo] = 140;
+		}
+		if (joylBtn(1))
+		{
+		motor[motorD] = -10;
+		}
+		else if(joylBtn(2))
+		{
+		motor[motorD] = 10;
+		}
+		else
+		{
+		motor[motorD]	= 0;
+		}
+		getJoystickSettings(joystick);
+    motor[motorC] = joystick.joy1_y1;
+    motor[motorB] = joystick.joy1_y2;
+
+}
