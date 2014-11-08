@@ -103,7 +103,15 @@ void joystickControl()
 	{
 		motor[motorD] = 0;
 	}
+
+	if (abs(joystick.joy1_y1) >  10 || abs(joystick.joy1_y2) > 10)
+	{
     motor[left] = quadraticJoystick(joystick.joy1_y1);
     motor[right] = quadraticJoystick(joystick.joy1_y2);
-
+	}
+	else
+	{
+		motor[left] = 0;
+		motor[right] = 0;
+	}
 }
