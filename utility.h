@@ -73,6 +73,12 @@ void move(float distance)
 	motor[right] = 0;
 }
 
+float quadraticJoystick (float x)
+{
+	float y = .0119 * x * x - .2834 * x;
+	return y;
+}
+
 void joystickControl()
 {
 	getJoystickSettings(joystick);
@@ -97,7 +103,7 @@ void joystickControl()
 	{
 		motor[motorD] = 0;
 	}
-    motor[left] = joystick.joy1_y1;
-    motor[right] = joystick.joy1_y2;
+    motor[left] = quadraticJoystick(joystick.joy1_y1);
+    motor[right] = quadraticJoystick(joystick.joy1_y2);
 
 }
