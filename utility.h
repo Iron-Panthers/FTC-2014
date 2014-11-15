@@ -97,5 +97,5 @@ void joystickControl()
 		getJoystickSettings(joystick);
     motor[motorC] = joystick.joy1_y1;
     motor[motorB] = joystick.joy1_y2;
-
+    
 }
