@@ -1,3 +1,5 @@
+#include "JoystickDriver.c"
+
 const float ROBOT_RATE = 200;	//measure this to find real value
 const float MOTOR_SPEED = 75;
 const float RADIUS = 5; //measure this to find real value
@@ -6,21 +8,21 @@ void turn(float degrees)
 {
 	float rad = degrees * PI/180;
 	float distance = rad * RADIUS;
-	float time = distance/ROBOT_SPEED;
+	float time = distance/ROBOT_RATE;
 	time = time * 1000;
 
 	if (degrees > 0)
-		{
-			motor[left] = ROBOT_SPEED;
-			motor[right] = 0;
-			wait1Msec(time);
-			motor[left] = 0;
-			motor[right] = 0;
-		}
+	{
+		motor[left] = MOTOR_SPEED;
+		motor[right] = 0;
+	    wait1Msec(time);
+		motor[left] = 0;
+		motor[right] = 0;
+	}
 	else if (degrees < 0)
 	{
 		motor[left] = 0;
-		motor[right] = ROBOT_SPEED;
+		motor[right] = MOTOR_SPEED;
 		wait1Msec(time);
 		motor[right] = 0;
 		motor[left] = 0;
@@ -31,21 +33,21 @@ void turnTwoWheels(float degrees)
 {
 	float rad = degrees * PI/180;
 	float distance = rad * RADIUS;
-	float time = distance/ROBOT_SPEED;
+	float time = distance/ROBOT_RATE;
 	time = time * 1000;
 
 	if (degrees > 0)
 		{
-			motor[left] = ROBOT_SPEED;
-			motor[right] = -ROBOT_SPEED;
+			motor[left] = MOTOR_SPEED;
+			motor[right] = -MOTOR_SPEED;
 			wait1Msec(time);
 			motor[left] = 0;
 			motor[right] = 0;
 		}
 	else if (degrees < 0)
 	{
-		motor[left] = -ROBOT_SPEED;
-		motor[right] = ROBOT_SPEED;
+		motor[left] = -MOTOR_SPEED;
+		motor[right] = MOTOR_SPEED;
 		wait1Msec(time);
 		motor[right] = 0;
 		motor[left] = 0;
@@ -71,31 +73,52 @@ void move(float distance)
 	motor[right] = 0;
 }
 
+float quadraticJoystick (float x)
+{
+	float y = .0119 * x * x - .2834 * x;
+	return y;
+}
+
 void joystickControl()
 {
-		getJoystickSettings(joystick);
-		if (joylBtn(3))
-		{
+	getJoystickSettings(joystick);
+	if (joy1Btn(3))
+	{
 		servo[lockServo] = 182;
-		}
-		else (joylBtn(4))
-		{
+	}
+	else if(joy1Btn(4))
+	{
 		servo[lockServo] = 140;
-		}
-		if (joylBtn(1))
-		{
+	}
+
+	if (joy1Btn(1))
+	{
 		motor[motorD] = -10;
-		}
-		else if(joylBtn(2))
-		{
+	}
+	else if(joy1Btn(2))
+	{
 		motor[motorD] = 10;
-		}
-		else
-		{
-		motor[motorD]	= 0;
-		}
-		getJoystickSettings(joystick);
-    motor[motorC] = joystick.joy1_y1;
-    motor[motorB] = joystick.joy1_y2;
-    
+	}
+	else
+	{
+		motor[motorD] = 0;
+	}
+
+	if (abs(joystick.joy1_y1) > 10)
+	{
+    	motor[left] = quadraticJoystick(joystick.joy1_y1);
+	}
+	else
+	{
+		motor[left] = 0;
+	}
+
+	if (abs(joystick.joy1_y2) > 10)
+	{
+	    motor[right] = quadraticJoystick(joystick.joy1_y2);
+    }
+    else
+    {
+        motor[right] = 0;
+    }
 }
