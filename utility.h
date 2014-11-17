@@ -84,24 +84,39 @@ void joystickControl()
 	getJoystickSettings(joystick);
 	if (joy1Btn(3))
 	{
-		servo[lockServo] = 182;
+		servo[servo1] = 182;
 	}
 	else if(joy1Btn(4))
 	{
-		servo[lockServo] = 140;
+		servo[servo1] = 140;
 	}
 
+	//extender
 	if (joy1Btn(1))
 	{
-		motor[motorD] = -10;
+		servo[servo2] = 100;
 	}
 	else if(joy1Btn(2))
 	{
-		motor[motorD] = 10;
+		servo[servo2] = 156;
 	}
 	else
 	{
-		motor[motorD] = 0;
+		servo[servo2] = 128;
+	}
+
+	//conveyer belt motor
+	if (joy1Btn(5))
+	{
+		motor[extender] = 10;
+	}
+	else if (joy1Btn(6))
+	{
+		motor[extender] = -10;
+	}
+	else
+	{
+		motor[extender] = 0;
 	}
 
 	if (abs(joystick.joy1_y1) > 10)
@@ -116,9 +131,18 @@ void joystickControl()
 	if (abs(joystick.joy1_y2) > 10)
 	{
 	    motor[right] = quadraticJoystick(joystick.joy1_y2);
-    }
-    else
-    {
-        motor[right] = 0;
-    }
+  }
+  else
+  {
+      motor[right] = 0;
+  }
+   //intake motor
+  if (joy1Btn(5))
+  {
+  	motor[intakeMotor] = -10;
+  }
+  else
+  {
+  	motor[intakeMotor] = 0;
+	}
 }
