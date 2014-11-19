@@ -17,13 +17,9 @@
 
 task main ()
 {
-
-	//servo[extender] = 150;
-	//wait1Msec(1000);
 		while(true)
 		{
 
 			joystickControl();
 		}
-    //waitForStart();
 }
