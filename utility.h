@@ -1,14 +1,33 @@
 #include "JoystickDriver.c"
 
-const float ROBOT_RATE = 200;	//measure this to find real value
+const float MOVE_RATE = .530;
 const float MOTOR_SPEED = 75;
-const float RADIUS = 5; //measure this to find real value
+const float RADIUS = .457; //radis in meters
 
 void turn(float degrees)
 {
+    float adjTurn;
+
+    if (degrees > 0 && degrees < 38)
+    {
+        adjTurn = .400;
+    }
+    if (degrees > 38 && degrees < 52)
+    {
+        adjTurn = .430;
+    }
+    if (degrees > 52 && degrees < 100)
+    {
+        adjTurn = .460;
+    }
+    if (degrees > 100 && degrees <= 360)
+    {
+        adjTurn = .470;
+    }
+
 	float rad = degrees * PI/180;
 	float distance = rad * RADIUS;
-	float time = distance/ROBOT_RATE;
+	float time = distance/adjTurn;
 	time = time * 1000;
 
 	if (degrees > 0)
@@ -31,14 +50,24 @@ void turn(float degrees)
 
 void turnTwoWheels(float degrees)
 {
-	float rad = degrees * PI/180;
+    float turnRate;
+    if (degrees > 0)
+	{
+        turnRate = 680;
+    }
+    if (degrees < 0)
+    {
+        turnRate = 740;
+    }
+
+	float rad = abs(degrees) * PI/180;
 	float distance = rad * RADIUS;
-	float time = distance/ROBOT_RATE;
+	float time = distance/turnRate;
 	time = time * 1000;
 
 	if (degrees > 0)
 		{
-			motor[left] = MOTOR_SPEED;
+			motor[left] = MOTOR_SPEED + 5;
 			motor[right] = -MOTOR_SPEED;
 			wait1Msec(time);
 			motor[left] = 0;
@@ -46,7 +75,7 @@ void turnTwoWheels(float degrees)
 		}
 	else if (degrees < 0)
 	{
-		motor[left] = -MOTOR_SPEED;
+		motor[left] = -MOTOR_SPEED - 5;
 		motor[right] = MOTOR_SPEED;
 		wait1Msec(time);
 		motor[right] = 0;
@@ -56,16 +85,16 @@ void turnTwoWheels(float degrees)
 
 void move(float distance)
 {
-	float waitTime = distance/ROBOT_RATE;
+	float waitTime = distance/MOVE_RATE;
 	waitTime = abs(waitTime) * 1000;
 	if (distance > 0)
 	{
-		motor[left] = MOTOR_SPEED;
+		motor[left] = MOTOR_SPEED + 5;
 		motor[right] = MOTOR_SPEED;
 	}
 	else if (distance < 0)
 	{
-		motor[left] = -MOTOR_SPEED;
+		motor[left] = -MOTOR_SPEED - 5;
 	    motor[right] = -MOTOR_SPEED;
 	}
 	wait1Msec(waitTime);
@@ -94,11 +123,11 @@ void joystickControl()
 	getJoystickSettings(joystick);
 	if (joy1Btn(3))
 	{
-		servo[servo1] = 140;
+		servo[servo1] = 170;
 	}
 	else if(joy1Btn(2))
 	{
-		servo[servo1] = 182;
+		servo[servo1] = 255;
 	}
 
 	//Continuous rotation servo
@@ -132,7 +161,7 @@ void joystickControl()
 	//Drivetrain
 	if (abs(joystick.joy1_y1) > 10)
 	{
-    	motor[left] = -(quadraticJoystick(joystick.joy1_y1));
+    	motor[left] = quadraticJoystick(joystick.joy1_y1);
 	}
 	else
 	{
@@ -164,7 +193,7 @@ void joystickControl()
     {
         motor[intakeMotor] = -10;
     }
-   if ((joy1Btn(8)) == 0 &&  joy1_TopHat == -1 ))
+   if (joy1Btn(8) == 0 &&  joy1_TopHat == -1 )
    {
        motor[intakeMotor] = 0;
    }
