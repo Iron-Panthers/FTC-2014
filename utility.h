@@ -202,9 +202,10 @@ void joystickControl()
     {
         motor[intakeMotor] = -10;
     }
-    else if (joy1Btn(8) == 0 &&  joy1_TopHat == -1 )
-   {
-       motor[intakeMotor] = 0;
-   }
+    else if ((!joy1Btn(8)) && joystick.joy1_TopHat == -1 )
+    {
+        motor[intakeMotor] = 0;
+    }
+
 
 }
