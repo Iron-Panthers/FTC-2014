@@ -123,7 +123,7 @@ void joystickControl()
 	getJoystickSettings(joystick);
 	if (joy1Btn(3))
 	{
-		servo[servo1] = 170;
+		servo[servo1] = 150;
 	}
 	else if(joy1Btn(2))
 	{
@@ -185,13 +185,14 @@ void joystickControl()
     {
         motor[intakeMotor] = 0;
     }
-    if (joy1_TopHat == 0) //Up on D-Pad
-    {
-        motor[intakeMotor] = 10;
-    }
+
     if (joy1_TopHat == 2) //Right on D-Pad
     {
         motor[intakeMotor] = -10;
+    }
+    if (joy1_TopHat == 0) //Up on D-Pad
+    {
+        motor[intakeMotor] = 10;
     }
    if (joy1Btn(8) == 0 &&  joy1_TopHat == -1 )
    {
