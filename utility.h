@@ -2,7 +2,8 @@
 
 const float MOVE_RATE = .530;
 const float MOTOR_SPEED = 75;
-const float RADIUS = .457; //radis in meters
+const float RADIUS = .457; //radius in meters
+
 
 void turn(float degrees)
 {
@@ -121,21 +122,24 @@ float quadraticJoystick (float x)
 void joystickControl()
 {
 	getJoystickSettings(joystick);
-	if (joy1Btn(3))
+
+	//Lock Servo
+
+	if (joy1Btn(2)) //A
 	{
-		servo[servo1] = 150;
+		servo[servo1] = 172;
 	}
-	else if(joy1Btn(2))
+	else if(joy1Btn(3)) //B
 	{
 		servo[servo1] = 255;
 	}
 
 	//Continuous rotation servo
-	if (joy1Btn(1))
+	if (joy1Btn(1)) //X
 	{
 		servo[servo2] = 100;
 	}
-	else if(joy1Btn(4))
+	else if(joy1Btn(4)) //Y
 	{
 		servo[servo2] = 156;
 	}
@@ -145,11 +149,11 @@ void joystickControl()
 	}
 
 	//Conveyor belt motor
-	if (joystick.joy1_TopHat == 4)
+	if (joystick.joy1_TopHat == 4) //D-Pad Down
 	{
 		motor[extender] = 10;
 	}
-	else if (joystick.joy1_TopHat == 6)
+	else if (joystick.joy1_TopHat == 6) //D-Pad Left
 	{
 		motor[extender] = -10;
 	}
@@ -177,25 +181,29 @@ void joystickControl()
     }
 
     //Intake Motor
-    if ((joy1Btn(8)) && (motor[intakeMotor] == 0)) //Toggle intake motor if right on D-Pad
+    if (time1[T1] > 250)
+    {
+        if ((joy1Btn(8)) && (motor[intakeMotor] < 5)) //Toggle intake motor if right on D-Pad
+        {
+            motor[intakeMotor] = 10;
+        }
+        else if ((joy1Btn(8)) && (motor[intakeMotor] > 5))
+        {
+            motor[intakeMotor] = 0;
+        }
+        time1[T1] = 0;
+    }
+    if ((joystick.joy1_TopHat) == 0) //Up on D-Pad
     {
         motor[intakeMotor] = 10;
     }
-    else if ((joy1Btn(8)) && (motor[intakeMotor] == 10))
+    else if ((joystick.joy1_TopHat) == 2) //Right on D-Pad
+    {
+        motor[intakeMotor] = -10;
+    }
+    else if ((!joy1Btn(8)) && joystick.joy1_TopHat == -1 )
     {
         motor[intakeMotor] = 0;
     }
 
-    if (joy1_TopHat == 2) //Right on D-Pad
-    {
-        motor[intakeMotor] = -10;
-    }
-    if (joy1_TopHat == 0) //Up on D-Pad
-    {
-        motor[intakeMotor] = 10;
-    }
-   if (joy1Btn(8) == 0 &&  joy1_TopHat == -1 )
-   {
-       motor[intakeMotor] = 0;
-   }
 }

@@ -12,12 +12,13 @@
 #pragma config(Servo,  srvo_S4_C3_5,    servo5,               tServoNone)
 #pragma config(Servo,  srvo_S4_C3_6,    servo6,               tServoNone)
 
-#include "utility.h"
-
-task main ()
+task main()
 {
-		while(true)
-		{
-			joystickControl();
-		}
+    move(-3.26);
+    servo[servo1] = 225;
+    servo[servo1] = 150;
+    move(3.26);
+
+
+
 }
