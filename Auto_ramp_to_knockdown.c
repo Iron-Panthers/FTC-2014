@@ -16,23 +16,13 @@
 task main()
 {
     move(1.98);
-    wait1Msec(50);
     turn(-90);
-    wait1Msec(50);
     move(1.32);
-    wait1Msec(50);
     turn(90);
-    wait1Msec(50);
+    move(0.48);
     move(0.35);
-    wait1Msec(50);
-    move(-0.4);
-    wait1Msec(50);
     turn(-90);
-    wait1Msec(50);
     move(0.37);
-    wait1Msec(50);
     turn(-90);
-    wait1Msec(50);
     move(1.25);
-    //Ramp at at 90 and 0
 }

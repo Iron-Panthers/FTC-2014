@@ -4,40 +4,29 @@ const float MOVE_RATE = .530;
 const float MOTOR_SPEED = 75;
 const float RADIUS = .457; //radius in meters
 
-void closeGoalServo(bool lock)
-{
-    if (lock)
-    {
-        servo[servo1] = 172;
-    }
-    else
-    {
-        servo[servo1] = 255;
-    }
-}
 
 void turn(float degrees)
 {
     float adjTurn;
 
-    if (abs(degrees) > 0 && abs(degrees) < 38)
+    if (degrees > 0 && degrees < 38)
     {
         adjTurn = .400;
     }
-    if (abs(degrees) > 38 && abs(degrees) < 52)
+    if (degrees > 38 && degrees < 52)
     {
         adjTurn = .430;
     }
-    if (abs(degrees) > 52 && abs(degrees) < 100)
+    if (degrees > 52 && degrees < 100)
     {
         adjTurn = .460;
     }
-    if (abs(degrees) > 100 && abs(degrees) <= 360)
+    if (degrees > 100 && degrees <= 360)
     {
         adjTurn = .470;
     }
 
-	float rad = abs(degrees) * PI/180;
+	float rad = degrees * PI/180;
 	float distance = rad * RADIUS;
 	float time = distance/adjTurn;
 	time = time * 1000;
@@ -101,46 +90,17 @@ void move(float distance)
 	waitTime = abs(waitTime) * 1000;
 	if (distance > 0)
 	{
-		motor[left] = MOTOR_SPEED + 4;
+		motor[left] = MOTOR_SPEED + 5;
 		motor[right] = MOTOR_SPEED;
 	}
 	else if (distance < 0)
 	{
-		motor[left] = -MOTOR_SPEED - 4;
+		motor[left] = -MOTOR_SPEED - 5;
 	    motor[right] = -MOTOR_SPEED;
 	}
 	wait1Msec(waitTime);
 	motor[left] = 0;
 	motor[right] = 0;
-}
-
-void slowMove(float distance)
-{
-    const float MOVE_RATE_SLOW = MOVE_RATE / 4;
-    const float MOTOR_SPEED_SLOW = MOTOR_SPEED / 4;
-
-	float waitTime = distance/MOVE_RATE_SLOW;
-	waitTime = abs(waitTime) * 1000;
-	if (distance > 0)
-	{
-		motor[left] = MOTOR_SPEED_SLOW + 4;
-		motor[right] = MOTOR_SPEED_SLOW;
-	}
-	else if (distance < 0)
-	{
-		motor[left] = -MOTOR_SPEED_SLOW - 4;
-	    motor[right] = -MOTOR_SPEED_SLOW;
-	}
-	wait1Msec(waitTime);
-	motor[left] = 0;
-	motor[right] = 0;
-}
-
-void stopRobot(int forMilliseconds)
-{
-    motor[left] = 0;
-    motor[right] = 0;
-    wait1Msec(forMilliseconds);
 }
 
 int sign(int num)
@@ -159,7 +119,6 @@ float quadraticJoystick (float x)
 	return sign(x) > 0 ? y : -y;
 }
 
-bool toggleMoving = false;
 void joystickControl()
 {
 	getJoystickSettings(joystick);
@@ -226,28 +185,23 @@ void joystickControl()
     {
         if ((joy1Btn(8)) && (motor[intakeMotor] < 5)) //Toggle intake motor if right on D-Pad
         {
-            toggleMoving = true;
             motor[intakeMotor] = 10;
         }
         else if ((joy1Btn(8)) && (motor[intakeMotor] > 5))
         {
-            toggleMoving = false;
             motor[intakeMotor] = 0;
         }
         time1[T1] = 0;
     }
     if ((joystick.joy1_TopHat) == 0) //Up on D-Pad
     {
-        toggleMoving = false;
         motor[intakeMotor] = 10;
     }
     else if ((joystick.joy1_TopHat) == 2) //Right on D-Pad
     {
-        toggleMoving = false;
         motor[intakeMotor] = -10;
     }
-
-    if (!(joy1Btn(8)) && joystick.joy1_TopHat == -1 && !toggleMoving)
+    else if ((!joy1Btn(8)) && joystick.joy1_TopHat == -1 )
     {
         motor[intakeMotor] = 0;
     }

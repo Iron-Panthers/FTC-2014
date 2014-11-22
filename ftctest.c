@@ -16,6 +16,5 @@
 
 task main()
 {
- turn(-30);
- move(0.1);
+    turnTwoWheels(90);
 }

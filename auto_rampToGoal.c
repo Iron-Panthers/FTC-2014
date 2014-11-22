@@ -15,19 +15,8 @@
 
 task main()
 {
-	closeGoalServo(false)~;
-    move(-1.9);
-    slowMove(-0.3);
-    closeGoalServo(true);
-    slowMove(-0.2);
-    stopRobot(300);
-    turn(50);
-    stopRobot(50);
-    move(2.6);
-    stopRobot(50);
-    turn(60);
-    stopRobot(50);
-    move(0.1);
-
+    move(2.56);
+    turn(-40);
+    move(3.25);
 
 }
