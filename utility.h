@@ -4,6 +4,12 @@ const float MOVE_RATE = .530;
 const float MOTOR_SPEED = 75;
 const float RADIUS = .457; //radius in meters
 
+void stopRobot(int forMilliseconds)
+{
+    motor[left] = 0;
+    motor[right] = 0;
+    wait1Msec(forMilliseconds);
+}
 
 void turn(float degrees)
 {
