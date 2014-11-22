@@ -18,8 +18,8 @@ task main()
 {
     move(1.49);
     turn(-90);
-    move(.68);
+    move(0.68);
     turn(90);
     move(-1.49);
-
+//Parking Zone at 0
 }

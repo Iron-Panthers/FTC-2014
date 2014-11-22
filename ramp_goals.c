@@ -18,7 +18,7 @@
 task main ()
 {
     move(-20);
-    servo[servo1] = 182;
+    closeGoalServo(false);
     turnTwoWheels(30);
     move(40);
 
