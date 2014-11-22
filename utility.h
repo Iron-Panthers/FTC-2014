@@ -9,19 +9,19 @@ void turn(float degrees)
 {
     float adjTurn;
 
-    if (degrees > 0 && degrees < 38)
+    if (abs(degrees) > 0 && abs(degrees) < 38)
     {
         adjTurn = .400;
     }
-    if (degrees > 38 && degrees < 52)
+    if (abs(degrees) > 38 && abs(degrees) < 52)
     {
         adjTurn = .430;
     }
-    if (degrees > 52 && degrees < 100)
+    if (abs(degrees) > 52 && abs(degrees) < 100)
     {
         adjTurn = .460;
     }
-    if (degrees > 100 && degrees <= 360)
+    if (abs(degrees) > 100 && abs(degrees) <= 360)
     {
         adjTurn = .470;
     }
@@ -103,6 +103,28 @@ void move(float distance)
 	motor[right] = 0;
 }
 
+
+void slowMove(float distance)
+{
+    const float MOVE_RATE_SLOW = MOVE_RATE / 4;
+    const float MOTOR_SPEED_SLOW = MOTOR_SPEED / 4;
+	float waitTime = distance/MOVE_RATE_SLOW;
+	waitTime = abs(waitTime) * 1000;
+	if (distance > 0)
+	{
+		motor[left] = MOTOR_SPEED_SLOW + 5;
+		motor[right] = MOTOR_SPEED_SLOW;
+	}
+	else if (distance < 0)
+	{
+		motor[left] = -MOTOR_SPEED_SLOW - 5;
+	    motor[right] = -MOTOR_SPEED_SLOW;
+	}
+	wait1Msec(waitTime);
+	motor[left] = 0;
+	motor[right] = 0;
+}
+
 int sign(int num)
 {
     if (num > 0)
@@ -119,6 +141,7 @@ float quadraticJoystick (float x)
 	return sign(x) > 0 ? y : -y;
 }
 
+bool usingToggle = false;
 void joystickControl()
 {
 	getJoystickSettings(joystick);
@@ -185,23 +208,27 @@ void joystickControl()
     {
         if ((joy1Btn(8)) && (motor[intakeMotor] < 5)) //Toggle intake motor if right on D-Pad
         {
+            usingToggle = true;
             motor[intakeMotor] = 10;
         }
         else if ((joy1Btn(8)) && (motor[intakeMotor] > 5))
         {
+            usingToggle = false;
             motor[intakeMotor] = 0;
         }
         time1[T1] = 0;
     }
     if ((joystick.joy1_TopHat) == 0) //Up on D-Pad
     {
+        usingToggle = false;
         motor[intakeMotor] = 10;
     }
     else if ((joystick.joy1_TopHat) == 2) //Right on D-Pad
     {
+        usingToggle = false;
         motor[intakeMotor] = -10;
     }
-    else if ((!joy1Btn(8)) && joystick.joy1_TopHat == -1 )
+    else if ((!joy1Btn(8)) && joystick.joy1_TopHat == -1 && !usingToggle )
     {
         motor[intakeMotor] = 0;
     }
