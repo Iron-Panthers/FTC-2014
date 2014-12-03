@@ -8,7 +8,6 @@
 	- joystick controls for wheels
 		- dead zone
 		- zero motors
-
 ### testing 
 	- test all controlled functions first
 	- test all automous
