@@ -8,7 +8,7 @@ void closeGoalServo(bool lock)
 {
     if (lock==true)
     {
-        servo[servo1] = 172;
+        servo[servo1] = 160;
     }
     else
     {
@@ -112,7 +112,7 @@ void move(float distance)
 	}
 	else if (distance < 0)
 	{
-		motor[left] = -MOTOR_SPEED - 5;
+		motor[left] = -MOTOR_SPEED;
 	    motor[right] = -MOTOR_SPEED;
 	}
 	wait1Msec(waitTime);
@@ -159,6 +159,7 @@ float quadraticJoystick (float x)
 }
 
 bool usingToggle = false;
+bool usingToggleBelt = false;
 void joystickControl()
 {
 	getJoystickSettings(joystick);
@@ -167,11 +168,11 @@ void joystickControl()
 
 	if (joy1Btn(2)) //A
 	{
-		servo[servo1] = 172;
+		motor[lockMotor] = 172;
 	}
 	else if(joy1Btn(3)) //B
 	{
-		servo[servo1] = 255;
+		motor[lockMotor] = 255;
 	}
 
 	//Continuous rotation servo
@@ -188,19 +189,37 @@ void joystickControl()
 		servo[servo2] = 128;
 	}
 
+	//conveyer belt toggle
+    if (time1[T2] > 250)
+    {
+        if ((joy1Btn(5)) && (motor[extender] < 5)) //Toggle intake motor if right on D-Pad
+        {
+            usingToggleBelt = true;
+            motor[extender] = 6;
+        }
+        else if ((joy1Btn(5)) && (motor[extender] > 5))
+        {
+            usingToggleBelt = false;
+            motor[extender] = 0;
+        }
+        time1[T2] = 0;
+    }
 	//Conveyor belt motor
 	if (joystick.joy1_TopHat == 4) //D-Pad Down
 	{
-		motor[extender] = 10;
+	    usingToggleBelt = false;
+		motor[extender] = 6;
 	}
 	else if (joystick.joy1_TopHat == 6) //D-Pad Left
 	{
-		motor[extender] = -10;
+	    usingToggleBelt = false;
+		motor[extender] = -6;
 	}
-	else
-	{
-		motor[extender] = 0;
-	}
+	else if ((!joy1Btn(5)) && joystick.joy1_TopHat != 6 && joystick.joy1_TopHat != 4 && !usingToggleBelt )
+    {
+        motor[extender] = 0;
+    }
+
 
 	//Drivetrain
 	if (abs(joystick.joy1_y1) > 10)
@@ -223,12 +242,12 @@ void joystickControl()
     //Intake Motor
     if (time1[T1] > 250)
     {
-        if ((joy1Btn(8)) && (motor[intakeMotor] < 5)) //Toggle intake motor if right on D-Pad
+        if ((joy1Btn(6)) && (motor[intakeMotor] < 5)) //Toggle intake motor if right on D-Pad
         {
             usingToggle = true;
             motor[intakeMotor] = 10;
         }
-        else if ((joy1Btn(8)) && (motor[intakeMotor] > 5))
+        else if ((joy1Btn(6)) && (motor[intakeMotor] > 5))
         {
             usingToggle = false;
             motor[intakeMotor] = 0;
@@ -245,9 +264,66 @@ void joystickControl()
         usingToggle = false;
         motor[intakeMotor] = -10;
     }
-    else if ((!joy1Btn(8)) && joystick.joy1_TopHat == -1 && !usingToggle )
+    else if ((!joy1Btn(6)) && joystick.joy1_TopHat == -1 && !usingToggle )
     {
         motor[intakeMotor] = 0;
     }
 
+}
+
+enum CompareChoices {
+    Btn,
+    TopHat,
+    Toggle
+}
+
+typedef struct {
+    CompareChoices choice;
+    int compareValue;
+
+    int motorOrServoArray[];
+    int motorOrServoIndex;
+
+    int setToValue;
+
+    int motorToggleArray[];
+    int motorToggleIndex;
+    bool isToggling;
+} Conditional;
+
+Conditional conds;
+
+void checkConditionals()
+{
+    switch (conds.choice)
+    {
+    case Btn:
+        if (joy1Btn(compareValue))
+        {
+            motorOrServoArray[motorOrServoIndex] = setToValue;
+        }
+        break;
+    case TopHat:
+        if (joystick.joy1_TopHat == compareValue)
+        {
+            motorOrServoArray[motorOrServoIndex] = setToValue;
+        }
+        break;
+    case Toggle:
+        if ((joystick.joy1_TopHat) == compareValue) //Up on D-Pad
+	    {
+	        usingToggle = false;
+	        motor[intakeMotor] = 10;
+	    }
+	    else if ((joystick.joy1_TopHat) == 2) //Right on D-Pad
+	    {
+	        usingToggle = false;
+	        motor[intakeMotor] = -10;
+	    }
+	    else if ((!joy1Btn(6)) && joystick.joy1_TopHat == -1 && !usingToggle )
+	    {
+	        motor[intakeMotor] = 0;
+	    }
+
+    }
 }

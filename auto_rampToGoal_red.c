@@ -15,10 +15,23 @@
 
 task main()
 {
-    waitForStart();
-    servo[servo2] = 15;
-    move(30);
+    //waitForStart();
     closeGoalServo(false);
-    wait1Msec(8000);
+    servo[servo2] = 155;
+    move(-0.3);
+
+    slowMove(-0.3);
+    closeGoalServo(true);
+    slowMove(-0.2);
+    stopRobot(300);
     servo[servo2] = 128;
+    turn(-50);
+    stopRobot(50);
+    move(2.6);
+    stopRobot(50);
+    turn(60);
+    stopRobot(50);
+    move(0.1);
+
+
 }

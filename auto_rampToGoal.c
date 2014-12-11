@@ -15,19 +15,25 @@
 
 task main()
 {
+    waitForStart();
+    servo[servo2] = 15 ;
    closeGoalServo(false);
-    move(-1.9);
-    slowMove(-0.3);
+   wait1Msec(2000);
+    move(-0.7);
+    slowMove(-0.4);
     closeGoalServo(true);
-    slowMove(-0.2);
     stopRobot(300);
     turn(50);
     stopRobot(50);
-    move(2.6);
+    move(2.3);
+    servo[servo2] = 128;
     stopRobot(50);
     turn(60);
     stopRobot(50);
-    move(0.1);
+    move(0.3);
+    motor[extender] = 10;
+    wait1Msec(8000);
+    motor[extender] = 0;
 
 
 }

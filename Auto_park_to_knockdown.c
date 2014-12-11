@@ -16,6 +16,7 @@
 
 task main()
 {
+    //waitForStart();
     move(1.3);
     stopRobot(50);
     move(-0.77);

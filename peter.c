@@ -1,7 +1,7 @@
 #pragma config(Hubs,  S4, HTMotor,  HTMotor,  HTServo,  none)
 #pragma config(Sensor, S4,     ,               sensorI2CMuxController)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop, encoder)
-#pragma config(Motor,  mtr_S4_C1_1,     right,         tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S4_C1_1,     right,         tmotorTetrix, openLoop)                                                                                                                                                              _S4_C1_1,     right,         tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S4_C1_2,     left,          tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S4_C2_1,     extender,      tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S4_C2_2,     intakeMotor,   tmotorTetrix, openLoop, reversed)
@@ -16,6 +16,7 @@
 
 task main ()
 {
+        waitForStart();
 		while(true)
 		{
 			joystickControl();

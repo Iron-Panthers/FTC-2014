@@ -16,6 +16,7 @@
 
 task main()
 {
+    waitForStart();
     closeGoalServo(false);
     move(-3.26);
     closeGoalServo(true);
