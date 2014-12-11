@@ -4,17 +4,25 @@ const float MOVE_RATE = .530;
 const float MOTOR_SPEED = 75;
 const float RADIUS = .457; //radius in meters
 
-void closeGoalServo(bool lock)
+void GoalServo(bool lock)
 {
     if (lock==true)
     {
+<<<<<<< HEAD
         servo[servo1] = 160;
+=======
+        motor[goal] = _____;
+>>>>>>> origin/master
     }
     else
     {
-        servo[servo1] = 255;
+        servo[goal] = ____;
     }
+
 }
+
+
+
 void stopRobot(int forMilliseconds)
 {
     motor[left] = 0;
