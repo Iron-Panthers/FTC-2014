@@ -255,3 +255,39 @@ void joystickControl()
     }
 
 }
+
+typedef struct{
+	int value;
+	int comparison[];
+	TPCJoystick surfaces;
+	bool bToggle;
+	bool isMotor;
+	tMotor motorName;
+	TServoIndex servoName;
+}Conditional;
+
+void joystickControl(Conditional cond)
+{
+	if (Time1[T1] > 250)
+	{
+		if (cond.surfaces == 8) // if btn 8 is pressed
+	  {
+	  	if ((cond.bToggle && (motor[cond.motorName] < cond.comparison[1])) || (!cond.bToggle && (motor[cond.motorName] > cond.comparison[1])
+	  	{
+	  		motor[cond.motorName] = cond.value;
+	  		condlbToggle = !cond.bToggle;
+	  		time1[T1] = 0;
+	  	}
+	  }
+	}
+	if (joystick.cond.surfaces == cond.comparison)
+	{
+		if (isMotor)
+		{
+			motor[cond.motorName] = cond.value;
+		}else{
+			servo[cond.servoName] = cond.value;
+	  }
+	}
+}
+}
