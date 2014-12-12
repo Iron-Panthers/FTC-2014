@@ -372,3 +372,21 @@ void joystickControl(Conditional cond)
 }
 >>>>>>> 189bf7145a3ef1092addf52e810c228df39249dc
 }
+
+int ultrasonicDistance()
+{
+    const int numberOfTakes = 5;
+    int i = 0;
+    double averageValue;
+
+    while (i < numberofTakes)
+    {
+        if (time1[T2] > 2)
+        {
+            averageValue += SensorValue[sonarSensor];
+            i++;
+            time1[T2] = 0;
+        }
+    }
+    return (int)(averageValue / numberOfTakes);
+}
