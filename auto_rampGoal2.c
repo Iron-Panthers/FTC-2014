@@ -23,7 +23,7 @@ task main ()
 {
     motor[left] = -75;
     motor[right] = -75;
-    timer[T1] = 0;
+    time1[T1] = 0;
 
     bool touched = false;
     while (!touched)

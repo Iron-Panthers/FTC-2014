@@ -63,7 +63,7 @@ void joystickControl()
 
 	if (joystick.joy1_TopHat == 4) //D-Pad Down (Score with conveyor belt)
 	{
-		motor[belt = 6;
+		motor[belt] = 6;
 	}
 	else if (joystick.joy1_TopHat == 6) //D-Pad Left (Reverse conveyor belt)
 	{

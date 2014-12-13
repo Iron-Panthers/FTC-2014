@@ -1,3 +1,4 @@
+#include "drivers/hitechnic-superpro.h"
 
 int potValue()
 {

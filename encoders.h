@@ -3,7 +3,7 @@
 const float MOVE_RATE = .530; //Remeasure in imperial (inches per second)
 const float MOTOR_SPEED = 75;
 const float RADIUS = .457;  //Remeasure in imperial (inches)
-const float TURN_RATE = //Measure in imperial (inches)
+const float TURN_RATE = 23; //Measure in imperial (inches)
 
 void resetEncoders()
 {
