@@ -1,11 +1,11 @@
 #pragma config(Hubs,  S3, HTMotor,  HTMotor,  HTServo,  none)
 #pragma config(Sensor, S1,     HTSPB,          sensorI2CCustom9V)
 #pragma config(Sensor, S2,     ultra,          sensorSONAR)
-#pragma config(Sensor, S3,     HTSPB,          sensorNone)
+#pragma config(Sensor, S3,     HTSPB,          sensorI2CMuxController)
 #pragma config(Sensor, S4,     touch,          sensorTouch)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop, encoder)
 #pragma config(Motor,  mtr_S3_C1_1,     left,          tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S3_C1_2,     right,         tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C1_2,     right,         tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S3_C2_1,     goalLock,      tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C2_2,     belt,          tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S3_C3_1,    servo1,               tServoNone)
@@ -25,23 +25,41 @@ task main ()
     motor[right] = -75;
     time1[T1] = 0;
 
+    const int millisecondsForOffRamp = 3000;
+
     bool touched = false;
     while (!touched)
     {
         touched = SensorValue[touch];
-        if (time1[T1] > 3000 || touched)
+        if (time1[T1] > millisecondsForOffRamp || touched)
             break;
     }
     if (touched)
         StartTask(lowerLockMotor);
+    bool isRobotBlocking = false;
+    if (SensorValue[ultra] <= 30 && SensorValue[ultra] > 0)
+        isRobotBlocking = true;
 
-    motor[left] = -25;
-    motor[right] = -25;
-    wait1Msec(1000);
-    turn(30);
+    if (isRobotBlocking)
+    {
+        turn(-45);
+        move(-18);
+        turn(45);
+        move(-18);
+        StartTask(lowerLockMotor);
+    }
+    else
+    {
+        motor[left] = -25;
+        motor[right] = -25;
+        wait1Msec(1000);
+        turn(30);
+    }
 
     const int distanceToParkingZone = 144;
     move(distanceToParkingZone);
     turn(60);
-    move(6);
+    move(3);
+    StartTask(raiseLockMotor);
+    move(3);
 }
