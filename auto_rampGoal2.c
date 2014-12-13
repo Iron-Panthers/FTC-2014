@@ -37,9 +37,11 @@ task main ()
 
     motor[left] = -25;
     motor[right] = -25;
+    wait1Msec(1000);
+    turn(30);
 
-
-
-
-
+    const int distanceToParkingZone = 144;
+    move(distanceToParkingZone);
+    turn(60);
+    move(6);
 }
