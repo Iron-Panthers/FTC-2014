@@ -17,6 +17,8 @@ float quadraticJoystick (float x)
 	return sign(x) > 0 ? y : -y;
 }
 
+bool up = false;
+bool down = true;
 void joystickControl()
 {
     getJoystickSettings(joystick);
@@ -47,6 +49,37 @@ void joystickControl()
 	{
 		StartTask(raiseLockMotor);
 	}
+
+	/*
+	if (joy1Btn(2) || up)
+	{
+		up = true;
+		if(potValue() <= 38)
+		{
+			motor[goalLock] = -50;
+		}
+		else
+		{
+			motor[goalLock] = 0;
+			up = false;
+		}
+
+	}
+	else if (joy1Btn(3) || down)
+	{
+		down = true;
+		if (potValue() >= 20)
+		{
+			motor[goalLock] = 50;
+		}
+		else
+		{
+			motor[goalLock] = 0;
+			down = false;
+		}
+	}
+
+	*/
 
 	if (joy1Btn(1)) //X (raise belt)
 	{
