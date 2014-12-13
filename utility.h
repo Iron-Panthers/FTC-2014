@@ -4,30 +4,44 @@ const float MOVE_RATE = .530;
 const float MOTOR_SPEED = 75;
 const float RADIUS = .457; //radius in meters
 
-void GoalServo(bool lock)
+//int data = HTSPBreadADC(HTSPB, 0, 10);
+//potentiometer up is 20 down 38
+
+
+bool goalSensor()
 {
-    if (lock==true)
+    if(SensorValue(hcuot) == 1)
     {
-<<<<<<< HEAD
-        servo[servo1] = 160;
-=======
-        motor[goal] = _____;
->>>>>>> origin/master
+        return true;
     }
     else
     {
-        servo[goal] = ____;
+        return false;
     }
-
 }
-
-
 
 void stopRobot(int forMilliseconds)
 {
     motor[left] = 0;
     motor[right] = 0;
     wait1Msec(forMilliseconds);
+}
+
+void motorGoal()
+{
+    while(true)
+    {
+        if (goalSensor() == 138)
+        {
+            motor[goalLock] = 100;
+            stopRobot(100);
+            motor[goalLock] = 0;
+        }
+        else
+        {
+            motor[goalLock] = 0;
+        }
+    }
 }
 
 void turn(float degrees)
@@ -176,11 +190,11 @@ void joystickControl()
 
 	if (joy1Btn(2)) //A
 	{
-		motor[lockMotor] = 172;
+		motor[goalLock] = 172;
 	}
 	else if(joy1Btn(3)) //B
 	{
-		motor[lockMotor] = 255;
+		motor[goalLock] = 255;
 	}
 
 	//Continuous rotation servo
@@ -247,7 +261,7 @@ void joystickControl()
       motor[right] = 0;
     }
 
-    //Intake Motor
+    /*Intake Motor
     if (time1[T1] > 250)
     {
         if ((joy1Btn(6)) && (motor[intakeMotor] < 5)) //Toggle intake motor if right on D-Pad
@@ -275,100 +289,6 @@ void joystickControl()
     else if ((!joy1Btn(6)) && joystick.joy1_TopHat == -1 && !usingToggle )
     {
         motor[intakeMotor] = 0;
-    }
+    }*/
 
-}
-
-<<<<<<< HEAD
-enum CompareChoices {
-    Btn,
-    TopHat,
-    Toggle
-}
-
-typedef struct {
-    CompareChoices choice;
-    int compareValue;
-
-    int motorOrServoArray[];
-    int motorOrServoIndex;
-
-    int setToValue;
-
-    int motorToggleArray[];
-    int motorToggleIndex;
-    bool isToggling;
-} Conditional;
-
-Conditional conds;
-
-void checkConditionals()
-{
-    switch (conds.choice)
-    {
-    case Btn:
-        if (joy1Btn(compareValue))
-        {
-            motorOrServoArray[motorOrServoIndex] = setToValue;
-        }
-        break;
-    case TopHat:
-        if (joystick.joy1_TopHat == compareValue)
-        {
-            motorOrServoArray[motorOrServoIndex] = setToValue;
-        }
-        break;
-    case Toggle:
-        if ((joystick.joy1_TopHat) == compareValue) //Up on D-Pad
-	    {
-	        usingToggle = false;
-	        motor[intakeMotor] = 10;
-	    }
-	    else if ((joystick.joy1_TopHat) == 2) //Right on D-Pad
-	    {
-	        usingToggle = false;
-	        motor[intakeMotor] = -10;
-	    }
-	    else if ((!joy1Btn(6)) && joystick.joy1_TopHat == -1 && !usingToggle )
-	    {
-	        motor[intakeMotor] = 0;
-	    }
-
-    }
-=======
-typedef struct{
-	int value;
-	int comparison[];
-	TPCJoystick surfaces;
-	bool bToggle;
-	bool isMotor;
-	tMotor motorName;
-	TServoIndex servoName;
-}Conditional;
-
-void joystickControl(Conditional cond)
-{
-	if (Time1[T1] > 250)
-	{
-		if (cond.surfaces == 8) // if btn 8 is pressed
-	  {
-	  	if ((cond.bToggle && (motor[cond.motorName] < cond.comparison[1])) || (!cond.bToggle && (motor[cond.motorName] > cond.comparison[1])
-	  	{
-	  		motor[cond.motorName] = cond.value;
-	  		condlbToggle = !cond.bToggle;
-	  		time1[T1] = 0;
-	  	}
-	  }
-	}
-	if (joystick.cond.surfaces == cond.comparison)
-	{
-		if (isMotor)
-		{
-			motor[cond.motorName] = cond.value;
-		}else{
-			servo[cond.servoName] = cond.value;
-	  }
-	}
-}
->>>>>>> 189bf7145a3ef1092addf52e810c228df39249dc
 }
